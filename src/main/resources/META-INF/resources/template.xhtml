@@ -7,8 +7,12 @@
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" />
+
 </h:head>
 <h:body>
+    <f:facet name="last">
+        <h:outputStylesheet library="css" name="own_style.css" />
+    </f:facet>
     <div style="max-width: 50em;">
     <div id="top" class="top" >
         <p:tabMenu activeIndex="#{param.i}">
