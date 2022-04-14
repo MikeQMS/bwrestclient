@@ -8,9 +8,11 @@
 * Run application in IDE and access page in browser with http://localhost:1234
 
 * Run application in Docker
-* docker: 
-  * docker pull mikeqms/bwrestclient:latest
-    * http://localhost:1234
+* Docker Image:
+  * run powershell
+      * "docker pull mikeqms/bwrestclient:latest"
+  * run image with any port (example below with 1234)
+  * browse http://localhost:1234
 
 
 # Info
