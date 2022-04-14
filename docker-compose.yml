@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+ #service 3: definition of your spring-boot app
+  bwrestclient:                        #it is just a name, which will be used only in this file.
+    image: mikeqms/bwrestclient            #name of the image after dockerfile executes
+    container_name: bwrestclient  #name of the container created from docker image
+    build:
+      context: .                          #docker file path (. means root directory)
+      dockerfile: Dockerfile   #docker file name
+    ports:
+      - "1234:1234"                       #docker containter port with your os port
+    restart: always
+

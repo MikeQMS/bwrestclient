@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<head>
+    <h:head>
+        <h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" />
+    </h:head>
+</head>
+<h:body>
+    <ui:composition template="template.xhtml">
+    <ui:define name="content">
+    <div class="card">
+        <h:form id="form" style="width: 50em;">
+            <h1>Burkhardt-Weber Jobs</h1>
+
+            <p:dataTable id="joblist" var="job" value="#{jobBeans.jobs}" rowKey="#{job.id}"
+                         stripedRows="true" widgetVar="jobTable" selectionMode="single" selection="#{jobBeans.selectedJob}" >
+            <p:ajax event="rowSelect" update=":form:jobDetail :form:dialogBoxJob"  oncomplete="PF('jobDialog').show()"/>
+                <f:facet name="header">
+                    Auf die Zeile tippen um Overlay zu öffnen.
+                </f:facet>
+
+
+
+                <p:column headerText="Stellenangebote">
+                    <h:outputText value="#{job.position}"/>
+                </p:column>
+
+
+                <p:column style="text-align: right">
+                    <p:button href="#{job.applicationFormURL}" styleClass="ui-button-raised ui-button-flat" value="Bewerben" target="_blank"/>
+                </p:column>
+            </p:dataTable>
+            <p:dialog id="dialogBoxJob" header="Burkhardt-Weber - Job Details" style="height: 95vh;" dynamic="true" widgetVar="jobDialog" minHeight="40" showEffect="fade" modal="true" resizable="false"  >
+                <p:outputPanel id="jobDetail"  style="padding: 10px; height: 80vh; width: 65vw; min-width: 65vw; overflow-y: scroll;" deferred="true">
+                    <p:ajax event="load" listener="#{jobBeans.selectedJob}"/>
+                    <f:facet name="loading">
+                        <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+                        <p:skeleton width="100%" height="63px"/>
+                    </f:facet>
+                    <p:column >
+
+                <div class="product">
+                    <div class="product-list-item">
+                        <div style="width: 100%; height: 300px;background-position: left center; background-size: cover;background-image: url(#{jobBeans.selectedJob.images.get(0).url});" ></div>
+                        <div class="product-list-detail">
+                            <div>Ausgeschrieben am: #{jobBeans.selectedJob.jobOpening.createdDate}</div>
+                            <div>#{jobBeans.selectedJob.id}</div>
+                            <p/>
+                            <p><h2>#{jobBeans.selectedJob.position} - #{jobBeans.selectedJob.jobOpening.contractPeriod.name.toUpperCase()}</h2></p>
+                            <div><h3>Start: #{jobBeans.selectedJob.jobOpening.earliestEntryDate}</h3></div>
+
+                            <div class="job-introduction"><h:outputText value="#{jobBeans.selectedJob.introduction}"  escape="false"/></div>
+                            <p/>
+                            <div class="job-task"><h:outputText value="#{jobBeans.validationJobTasks(jobBeans.selectedJob.tasks)}" escape="false"/></div>
+                            <p/>
+                            <div class="job-profile"><h:outputText value="#{jobBeans.validationJobProfile(jobBeans.selectedJob.profile)}"  escape="false"/></div>
+                            <p/>
+                            <div class="job-weOffer"><h:outputText value="#{jobBeans.validationJobWeOffer(jobBeans.selectedJob.tasks)}"  escape="false"/></div>
+
+
+
+
+                            <p/>
+                            <div style="">
+                            <p:button id="applyingLinks" href="#{jobBeans.selectedJob.applicationFormURL}" styleClass="ui-button-raised" value="Bewerben" target="_blank"/>
+                            </div>
+                            <p/>
+                            <div>Ansprechpartner #{jobBeans.selectedJob.jobOpening.responsibleUser.division}:</div>
+                            <div style="text-indent:10px;"><strong>#{job.jobOpening.responsibleUser.salutation.name} #{jobBeans.selectedJob.jobOpening.responsibleUser.firstName} #{jobBeans.selectedJob.jobOpening.responsibleUser.lastName}</strong></div>
+                            <div style="text-indent:10px;">#{jobBeans.selectedJob.jobOpening.responsibleUser.street} #{jobBeans.selectedJob.jobOpening.responsibleUser.number}</div>
+                            <div style="text-indent:10px;">#{jobBeans.selectedJob.jobOpening.responsibleUser.zipCode} #{jobBeans.selectedJob.jobOpening.responsibleUser.city}</div>
+                            <div style="text-indent:10px;">#{jobBeans.selectedJob.jobOpening.responsibleUser.email}</div>
+                            <div style="text-indent:10px;">#{jobBeans.selectedJob.jobOpening.responsibleUser.telephone}</div>
+                            <p></p>
+                            <p:hotkey bind="esc" oncomplete="PF('jobDialog').hide()"/>
+                        </div>
+                    </div>
+                </div>
+                    </p:column>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+    </div>
+    </ui:define>
+    </ui:composition>
+</h:body>
+</html>

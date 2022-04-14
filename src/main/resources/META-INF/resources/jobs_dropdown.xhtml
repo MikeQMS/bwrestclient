@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<head>
+    <h:head>
+        <h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" />
+    </h:head>
+</head>
+<h:body>
+    <ui:composition template="template.xhtml">
+    <ui:define name="content">
+    <div class="card">
+    <h:form id="form" style="width: 50em;">
+        <h1>Burkhardt-Weber Jobs</h1>
+
+        <p:dataTable id="joblist" var="job" value="#{jobBeans.jobs}" rowKey="#{job.id}"
+                     stripedRows="true" widgetVar="jobTable" process="@this">
+            <f:facet name="header">
+                Erweitern Sie die Reihe, mit klick auf den Pfeil.
+            </f:facet>
+            <p:column style="width:2rem">
+                <p:rowToggler/>
+            </p:column>
+
+            <p:ajax event="rowSelect" update="form joblist" oncomplete="PF('dlg2').show()"/>
+
+            <p:column headerText="Stellenangebote">
+                <h:outputText value="#{job.position}"/>
+            </p:column>
+
+
+            <p:column style="text-align: right">
+                <p:button href="#{job.applicationFormURL}" styleClass="ui-button-raised ui-button-flat" value="Bewerben" target="_blank"/>
+            </p:column>
+
+
+
+            <p:rowExpansion>
+                <div class="product" >
+                    <div class="product-list-item">
+                        <div style="width: 100%; height: 300px;background-position: left center; background-size: cover;background-image: url(#{job.images.get(0).url});" ></div>
+                        <div class="product-list-detail">
+                            <div>Ausgeschrieben am: #{job.jobOpening.createdDate}</div>
+                            <div>#{job.id}</div>
+                            <p/>
+                            <p><h2>#{job.position} - #{job.jobOpening.contractPeriod.name.toUpperCase()}</h2></p>
+                                <div><h3>Start: #{job.jobOpening.earliestEntryDate}</h3></div>
+
+                            <div class="job-introduction"><h:outputText value="#{job.introduction}"  escape="false"/></div>
+                            <p/>
+                            <div class="job-task"><h:outputText value="#{jobBeans.validationJobTasks(job.tasks)}" escape="false"/></div>
+                            <p/>
+                            <div class="job-profile"><h:outputText value="#{jobBeans.validationJobProfile(job.profile)}"  escape="false"/></div>
+                            <p/>
+                            <div class="job-weOffer"><h:outputText value="#{jobBeans.validationJobWeOffer(job.tasks)}"  escape="false"/></div>
+<!--                            <div class="job-benefits"><h:outputText value="#{job.benefits}"  escape="false"/></div>-->
+
+                            <p:button id="applyingLinks"  href="#{job.applicationFormURL}" styleClass="ui-button-raised" value="Bewerben" target="_blank"/>
+
+<!--                            <div>Job: #{job.jobOpening.name}</div>-->
+<!--                            <div>Berufslevel: #{jobBeans.validationJobOpening(job.jobOpening).targetGroups.get(0).name}</div>-->
+<!--                            <div>Arbeitszeit: #{jobBeans.validationJobOpening(job.jobOpening).workingTimes.get(0).name}</div>-->
+<!--                            <div>Anstellung: #{job.jobOpening.contractPeriod.name}</div>-->
+<!--                            <div>Starten ab: #{job.jobOpening.earliestEntryDate}</div>-->
+                            <p/>
+                            <div>Ansprechpartner #{job.jobOpening.responsibleUser.division}:</div>
+                            <div style="text-indent:10px;"><strong>#{job.jobOpening.responsibleUser.salutation.name} #{job.jobOpening.responsibleUser.firstName} #{job.jobOpening.responsibleUser.lastName}</strong></div>
+                            <div style="text-indent:10px;">#{job.jobOpening.responsibleUser.street} #{job.jobOpening.responsibleUser.number}</div>
+                            <div style="text-indent:10px;">#{job.jobOpening.responsibleUser.zipCode} #{job.jobOpening.responsibleUser.city}</div>
+                            <div style="text-indent:10px;">#{job.jobOpening.responsibleUser.email}</div>
+                            <div style="text-indent:10px;">#{job.jobOpening.responsibleUser.telephone}</div>
+
+                        </div>
+                    </div>
+                </div>
+            </p:rowExpansion>
+
+        </p:dataTable>
+
+        <p:dialog header="Header" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true">
+            <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </p:dialog>
+
+        </h:form>
+    </div>
+    </ui:define>
+    </ui:composition>
+</h:body>
+</html>
