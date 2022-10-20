@@ -9,9 +9,11 @@
 
 * Run application in Docker
 * Docker Image:
-  * run powershell
-      * "docker pull mikeqms/bwrestclient:latest"
-  * run image with any port (example below with 1234)
+  * run docker
+  * run powershell / CMD / Terminal
+      * pull image with "docker pull mikeqms/bwrestclient:latest"
+  * run container:
+      * "docker run -d -p 1234:1234 mikeqms/bwrestclient"
   * browse http://localhost:1234
 
 
